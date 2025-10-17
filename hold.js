@@ -1,4 +1,4 @@
-rocess.on('uncaughtException', (err) => {});
+process.on('uncaughtException', (err) => {});
 process.on('unhandledRejection', (err) => {});
 var vm = require('vm');
 var requestModule = require('request');
